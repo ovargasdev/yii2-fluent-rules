@@ -1,0 +1,53 @@
+YII2 FLUENT RULES - PROPRIETARY HYBRID LICENSE (COMMERCIAL LIMITATION & ATTRIBUTION)
+
+Copyright (c) 2026 Omar Vargas. All rights reserved.
+
+By downloading, installing, copying, or using this software ("the Library"),
+you agree to be bound by the terms and conditions of this License.
+
+1. ATTRIBUTION AND SOURCE RECOGNITION (Rule 1)
+----------------------------------------------
+Any and all usage of this Library, whether in its original form, modified,
+integrated into other software, or within a derivative work (fork), MUST
+conspicuously retain this copyright notice and explicitly credit Omar Vargas
+as the original author and owner of the source code. This attribution must
+be visible in the source repository and inside the software's credits or
+dependency notices where applicable.
+
+2. PERMITTED FREE USE (Rule 2)
+------------------------------
+You are granted a non-exclusive, non-transferable, royalty-free license to
+use, modify, and integrate the Library under the following conditions:
+a) For personal, educational, or testing purposes.
+b) For internal business infrastructure tools, backend company systems, or
+   operational software where NO direct commercial profit is derived from
+   selling or leasing the application itself (Indirect Profit).
+
+3. COMMERCIAL USE RESTRICTIONS AND ROYALTIES (Rule 3)
+-----------------------------------------------------
+Any use of this Library within a project, application, platform, or service
+that generates DIRECT commercial revenue for its author, company, or owner
+(including, but not limited to: Software-as-a-Service/SaaS by subscription,
+point-of-sale applications, direct software sales, or commercial licensing
+to third parties) is STRICTLY PROHIBITED unless a separate Commercial Agreement
+is established.
+
+To utilize this Library in a direct profit-generating project, you must contact
+the author (Omar Vargas) to formalize one of the following licensing options:
+a) A Per-Project Royalties Fee (a percentage or recurring fee based on revenue).
+b) A Per-Project One-Time License Fee.
+
+CRITICAL LIMITATION: Any commercial authorization granted under section 3(a)
+or 3(b) is strictly bound to THAT SPECIFIC PROJECT. If you or your company
+develop a separate commercial product utilizing this Library, a new independent
+commercial license fee must be acquired for that specific development.
+
+4. DISCLAIMER OF WARRANTY
+-------------------------
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
