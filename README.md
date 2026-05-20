@@ -42,8 +42,10 @@ public function rules()
     return [
         [['code', 'name'], 'required'],
         ['code', 'string', 'max' => 2],
+        ['status', 'string'],
         ['code', 'unique'],
         ['population', 'integer', 'skipOnEmpty' => false],
+        [['status'], 'in', 'range' => ['active', 'inactive', 'deleted']],
         ['status', 'default', 'value' => 'active'],
     ];
 }
@@ -62,7 +64,7 @@ public function rules()
         Attribute::create('code')->string(2)->notNull()->unique(),
         Attribute::create('name')->string()->notNull(),
         Attribute::create('population')->integer()->skipOnEmpty(false),
-        Attribute::create('status')->defaultValue('active'),
+        Attribute::create('status')->string()->defaultValue('active')->in(['active', 'inactive', 'deleted']),
     ]);
 }
 ```
@@ -80,7 +82,7 @@ $this->createTable('{{%location}}', [
     'code' => $this->string(2)->notNull()->unique(),
     'name' => $this->string()->notNull(),
     'population' => $this->integer(),
-    'status' => $this->string()->defaultValue('active'),
+    'status' => $this->string()->defaultValue('active')->check("status IN ('active', 'inactive', 'deleted')"),
 ]);
 ```
 
@@ -90,7 +92,7 @@ return RuleBuilder::rules([
     Attribute::create('code')->string(2)->notNull()->unique(),
     Attribute::create('name')->string()->notNull(),
     Attribute::create('population')->integer(),
-    Attribute::create('status')->defaultValue('active'),
+    Attribute::create('status')->string()->defaultValue('active')->in(['active', 'inactive', 'deleted']),
 ]);
 ```
 
