@@ -1,6 +1,6 @@
 <?php
 
-const PHP_TAB = "\t";
+const INDENT = "\t\t\t";
 
 /**
  * This is the template for generating the model class of a specified table.
@@ -55,7 +55,6 @@ use ovargas\fluentrules\Attribute;
  */
 class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . "\n" ?>
 {
-
 <?php if (!empty($enum)): ?>
     /**
      * ENUM field values
@@ -94,7 +93,7 @@ endif
     {
         return RuleBuilder::rules([
 <?php
-    echo PHP_TAB . PHP_TAB . implode(',' . PHP_EOL . PHP_TAB . PHP_TAB, $fluentRules) . PHP_EOL;
+    echo INDENT . implode(',' . PHP_EOL . INDENT, $fluentRules) . PHP_EOL;
 ?>
         ]);
     }
