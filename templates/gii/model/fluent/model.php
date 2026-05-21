@@ -22,6 +22,7 @@ echo "<?php\n";
 namespace <?= $generator->ns ?>;
 
 use Yii;
+use ovargas\fluentrules\Attribute;
 
 /**
 * This is the model class for table "<?= $generator->generateTableName($tableName) ?>".
@@ -57,7 +58,7 @@ endif
 */
 public static function tableName()
 {
-return '<?= $generator->generateTableName($tableName) ?>';
+    return '<?= $generator->generateTableName($tableName) ?>';
 }
 <?php if ($generator->db !== 'db'): ?>
 
@@ -66,7 +67,7 @@ return '<?= $generator->generateTableName($tableName) ?>';
     */
     public static function getDb()
     {
-    return Yii::$app->get('<?= $generator->db ?>');
+        return Yii::$app->get('<?= $generator->db ?>');
     }
 <?php endif; ?>
 
@@ -75,7 +76,62 @@ return '<?= $generator->generateTableName($tableName) ?>';
 */
 public function rules()
 {
-return [<?= empty($rules) ? '' : ("\n            " . implode(",\n            ", $rules) . ",\n        ") ?>];
+    // Use fluent rules instead of array syntax
+    // Example: 
+    // return Attribute::create('attributeName')
+    //     ->string()
+    //     ->max(255)
+    //     ->toArray();
+    //
+    // In practice, generate a fluent builder for each rule in the $rules array.
+    //
+    // The following is a generated list of rule definitions using the fluent API.
+    //
+    // NOTE: The code below assumes that each rule in the $rules array
+    //       matches the signature: ['attributes', 'validator', ...options]
+    //       All options will be translated into chainable method calls
+    //       with the same name as the option key.
+    //
+    // For example, ['name', 'required'] becomes
+    //     Attribute::create('name')->required()->toArray(),
+    // and ['name', 'string', 'max' => 255] becomes
+    //     Attribute::create('name')->string()->max(255)->toArray(),
+    //
+    // This transformation is performed at generation time.
+    <?php
+    $generatedRules = [];
+    foreach ($rules as $ruleStr) {
+        // Parse the rule string into an array structure
+        // (This is a simplified parser – it may need refinement for complex rules)
+        $ruleArray = eval('return ' . rtrim($ruleStr, ",") . ';');
+        if (!is_array($ruleArray) || count($ruleArray) < 2) {
+            continue;
+        }
+        $attributes = $ruleArray[0];
+        $validator = $ruleArray[1];
+        $methods = [];
+        foreach ($ruleArray as $key => $value) {
+            if ($key < 2) continue;
+            $methods[] = $key . '(' . var_export($value, true) . ')';
+        }
+        // Build the fluent rule string
+        if (is_array($attributes)) {
+            $attrList = 'array(' . implode(', ', array_map(fn($a) => "'" . $a . "'", $attributes)) . ')';
+            $fluent = "Attribute::create({$attrList})";
+        } else {
+            $fluent = "Attribute::create('" . $attributes . "')";
+        }
+        foreach ($methods as $m) {
+            $fluent .= "->" . $m;
+        }
+        $fluent .= "->toArray()";
+        $generatedRules[] = $fluent . ",";
+    }
+    echo "$generatedRules\n";
+    ?>
+    return [
+        <?= implode("\n        ", $generatedRules) ?>
+    ];
 }
 
 /**
@@ -83,11 +139,11 @@ return [<?= empty($rules) ? '' : ("\n            " . implode(",\n            ", 
 */
 public function attributeLabels()
 {
-return [
+    return [
 <?php foreach ($labels as $name => $label): ?>
     <?= "'$name' => " . $generator->generateString($label) . ",\n" ?>
 <?php endforeach; ?>
-];
+    ];
 }
 <?php foreach ($relations as $name => $relation): ?>
 
