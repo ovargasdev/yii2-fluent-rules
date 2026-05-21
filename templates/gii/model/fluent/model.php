@@ -77,60 +77,42 @@ public static function tableName()
 public function rules()
 {
     // Use fluent rules instead of array syntax
-    // Example: 
-    // return Attribute::create('attributeName')
-    //     ->string()
-    //     ->max(255)
-    //     ;
+    // Example:
+    //    Attribute::create('attributeName')
+    //        ->string()
+    //        ->max(255)
+    //        ->message('...'),
     //
-    // In practice, generate a fluent builder for each rule in the $rules array.
-    //
-    // The following is a generated list of rule definitions using the fluent API.
-    //
-    // NOTE: The code below assumes that each rule in the $rules array
-    //       matches the signature: ['attributes', 'validator', ...options]
-    //       All options will be translated into chainable method calls
-    //       with the same name as the option key.
-    //
-    // For example, ['name', 'required'] becomes
-    //     Attribute::create('name')->required(),
-    // and ['name', 'string', 'max' => 255] becomes
-    //     Attribute::create('name')->string()->max(255),
-    //
-    // This transformation is performed at generation time.
-    <?php
+    // The following block converts the classic $rules array
+    // into fluent Attribute builder calls.
     $generatedRules = [];
-    foreach ($rules as $ruleStr) {
-        // Parse the rule string into an array structure
-        // (This is a simplified parser – it may need refinement for complex rules)
-        $ruleArray = eval('return ' . rtrim($ruleStr, ",") . ';');
-        if (!is_array($ruleArray) || count($ruleArray) < 2) {
+    foreach ($rules as $rule) {
+        if (!is_array($rule) || count($rule) < 2) {
             continue;
         }
-        $attributes = $ruleArray[0];
-        $validator = $ruleArray[1];
-        $methods = [];
-        foreach ($ruleArray as $key => $value) {
-            if ($key < 2) continue;
-            $methods[] = $key . '(' . var_export($value, true) . ')';
+        // First element may be a string or array of attribute names
+        $attributes = $rule[0];
+        // Second element is the validator name
+        $validator = $rule[1];
+
+        // Start building the fluent statement
+        $fluent = 'Attribute::create(' . var_export($attributes, true) . ')->' . $validator . '()';
+
+        // Remaining key/value pairs are rule options
+        foreach ($rule as $key => $value) {
+            if ($key < 2) {
+                continue;
+            }
+            // Use var_export to preserve accurate syntax for values
+            $fluent .= '->' . $key . '(' . var_export($value, true) . ')';
         }
-        // Build the fluent rule string
-        if (is_array($attributes)) {
-            $attrList = 'array(' . implode(', ', array_map(fn($a) => "'" . $a . "'", $attributes)) . ')';
-            $fluent = "Attribute::create({$attrList})";
-        } else {
-            $fluent = "Attribute::create('" . $attributes . "')";
-        }
-        foreach ($methods as $m) {
-            $fluent .= "->" . $m;
-        }
-        // Do not append ->toArray() as fluent builders are intended to be used directly
-        $generatedRules[] = $fluent . ",";
+
+        $generatedRules[] = $fluent . ';';
     }
-    echo "$generatedRules\n";
-    ?>
+
+    // Return an array of Attribute instances
     return \ovargas\fluentrules\RuleBuilder::rules([
-        <?= implode("\n        ", $generatedRules) ?>
+        <?php echo implode("\n        ", $generatedRules); ?>
     ]);
 }
 
@@ -187,7 +169,7 @@ public function attributeLabels()
             if ($generator->enableI18N) {
                 echo '            self::' . $value['constName'] . ' => Yii::t(\'' . $generator->messageCategory . '\', \'' . $value['value'] . "'),\n";
             } else {
-                echo '            self::' . $value['constName'] . ' => \'' . $value['value'] . "',\n";
+                echo '            self::' . $value['constName'] . ' => \'' . $value['value'] . '\',\n';
             }
             ?>
         <?php         endforeach; ?>
