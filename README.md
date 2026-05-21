@@ -192,7 +192,7 @@ if (YII_ENV_DEV) {
             'model' => [
                 'class' => 'yii\gii\generators\model\Generator',
                 'templates' => [
-                    'fluent' => '@vendor/ovargas/fluentrules/gii/templates/model',
+                    'fluent' => '@vendor/ovargas/fluentrules/templates/gii/model',
                 ]
             ]
         ],
