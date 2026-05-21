@@ -81,7 +81,8 @@ public function rules()
     // return Attribute::create('attributeName')
     //     ->string()
     //     ->max(255)
-    //     ->toArray();
+    //     // ->toArray()  // no longer needed
+    //     ;
     //
     // In practice, generate a fluent builder for each rule in the $rules array.
     //
@@ -93,9 +94,9 @@ public function rules()
     //       with the same name as the option key.
     //
     // For example, ['name', 'required'] becomes
-    //     Attribute::create('name')->required()->toArray(),
+    //     Attribute::create('name')->required(),
     // and ['name', 'string', 'max' => 255] becomes
-    //     Attribute::create('name')->string()->max(255)->toArray(),
+    //     Attribute::create('name')->string()->max(255),
     //
     // This transformation is performed at generation time.
     <?php
@@ -124,7 +125,7 @@ public function rules()
         foreach ($methods as $m) {
             $fluent .= "->" . $m;
         }
-        $fluent .= "->toArray()";
+        // Do not append ->toArray() as fluent builders are intended to be used directly
         $generatedRules[] = $fluent . ",";
     }
     echo "$generatedRules\n";
