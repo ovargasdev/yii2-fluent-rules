@@ -81,7 +81,6 @@ public function rules()
     // return Attribute::create('attributeName')
     //     ->string()
     //     ->max(255)
-    //     // ->toArray()  // no longer needed
     //     ;
     //
     // In practice, generate a fluent builder for each rule in the $rules array.
@@ -130,9 +129,9 @@ public function rules()
     }
     echo "$generatedRules\n";
     ?>
-    return [
+    return \ovargas\fluentrules\RuleBuilder::rules([
         <?= implode("\n        ", $generatedRules) ?>
-    ];
+    ]);
 }
 
 /**
