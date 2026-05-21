@@ -1,3 +1,5 @@
+translate_docs.php
+
 # Dependencias locales (NUNCA se suben al repositorio)
 /vendor/
 
@@ -8,3 +10,4 @@
 # Archivos temporales o de caché de herramientas de calidad
 /.phpunit.result.cache
 /.phpstan.cache/
+.aider*

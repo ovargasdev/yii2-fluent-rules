@@ -1,4 +1,7 @@
 <?php
+
+const PHP_TAB = "\t";
+
 /**
  * This is the template for generating the model class of a specified table.
  */
@@ -16,12 +19,24 @@
 /** @var array $relations list of relations (name => relation declaration) */
 /** @var array $relationsClassHints */
 
+// ============================================================================
+// CRITICAL: FLUENT RULES GENERATION
+// ============================================================================
+// This line is essential for the template to work with yii2-fluent-rules.
+// It parses Yii2's native rules into the fluent builder syntax.
+//
+// If you are customizing this template or creating your own, you MUST include
+// this line to populate the $fluentRules variable, unless you choose to
+// implement your own custom rule parsing algorithm.
+// ============================================================================
+$fluentRules = \ovargas\fluentrules\GiiHelper::parseGiiRules($rules);
+
 echo "<?php\n";
 ?>
-
 namespace <?= $generator->ns ?>;
 
 use Yii;
+use ovargas\fluentrules\RuleBuilder;
 use ovargas\fluentrules\Attribute;
 
 /**
@@ -58,7 +73,7 @@ endif
 */
 public static function tableName()
 {
-    return '<?= $generator->generateTableName($tableName) ?>';
+return '<?= $generator->generateTableName($tableName) ?>';
 }
 <?php if ($generator->db !== 'db'): ?>
 
@@ -67,8 +82,8 @@ public static function tableName()
     */
     public static function getDb()
     {
-        return Yii::$app->get('<?= $generator->db ?>');
-    }
+    return Yii::$app->get('<?= $generator->db ?>');
+    }es
 <?php endif; ?>
 
 /**
@@ -76,44 +91,11 @@ public static function tableName()
 */
 public function rules()
 {
-    // Use fluent rules instead of array syntax
-    // Example:
-    //    Attribute::create('attributeName')
-    //        ->string()
-    //        ->max(255)
-    //        ->message('...'),
-    //
-    // The following block converts the classic $rules array
-    // into fluent Attribute builder calls.
-    $generatedRules = [];
-    foreach ($rules as $rule) {
-        if (!is_array($rule) || count($rule) < 2) {
-            continue;
-        }
-        // First element may be a string or array of attribute names
-        $attributes = $rule[0];
-        // Second element is the validator name
-        $validator = $rule[1];
-
-        // Start building the fluent statement
-        $fluent = 'Attribute::create(' . var_export($attributes, true) . ')->' . $validator . '()';
-
-        // Remaining key/value pairs are rule options
-        foreach ($rule as $key => $value) {
-            if ($key < 2) {
-                continue;
-            }
-            // Use var_export to preserve accurate syntax for values
-            $fluent .= '->' . $key . '(' . var_export($value, true) . ')';
-        }
-
-        $generatedRules[] = $fluent . ',';
-    }
-
-    // Return an array of Attribute instances
-    return \ovargas\fluentrules\RuleBuilder::rules([
-        <?php echo implode("\n        ", $generatedRules); ?>
-    ]);
+return RuleBuilder::rules([
+<?php
+echo PHP_TAB . PHP_TAB . implode(',' . PHP_EOL . PHP_TAB . PHP_TAB, $fluentRules) . PHP_EOL;
+?>
+]);
 }
 
 /**
@@ -121,11 +103,11 @@ public function rules()
 */
 public function attributeLabels()
 {
-    return [
+return [
 <?php foreach ($labels as $name => $label): ?>
     <?= "'$name' => " . $generator->generateString($label) . ",\n" ?>
 <?php endforeach; ?>
-    ];
+];
 }
 <?php foreach ($relations as $name => $relation): ?>
 
@@ -169,7 +151,7 @@ public function attributeLabels()
             if ($generator->enableI18N) {
                 echo '            self::' . $value['constName'] . ' => Yii::t(\'' . $generator->messageCategory . '\', \'' . $value['value'] . "'),\n";
             } else {
-                echo '            self::' . $value['constName'] . ' => \'' . $value['value'] . '\',\n';
+                echo '            self::' . $value['constName'] . ' => \'' . $value['value'] . "',\n";
             }
             ?>
         <?php         endforeach; ?>
