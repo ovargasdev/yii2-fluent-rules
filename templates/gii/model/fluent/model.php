@@ -107,7 +107,7 @@ public function rules()
             $fluent .= '->' . $key . '(' . var_export($value, true) . ')';
         }
 
-        $generatedRules[] = $fluent . ';';
+        $generatedRules[] = $fluent . ',';
     }
 
     // Return an array of Attribute instances
