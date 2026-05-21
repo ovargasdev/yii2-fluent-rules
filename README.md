@@ -192,7 +192,7 @@ if (YII_ENV_DEV) {
             'model' => [
                 'class' => 'yii\gii\generators\model\Generator',
                 'templates' => [
-                    'fluent' => '@vendor/ovargas/fluentrules/templates/gii/model',
+                    'Fluent Rules' => '@vendor/ovargas/fluentrules/templates/gii/model',
                 ]
             ]
         ],
@@ -208,7 +208,7 @@ if (YII_ENV_DEV) {
 
 2\.3. Fill in your table details as usual.
 
-2\.4. Under the Code Template dropdown selection, choose fluent.
+2\.4. Under the Code Template dropdown selection, choose "Fluent Rules".
 
 2\.5. Click Preview and then Generate.
 
@@ -222,7 +222,7 @@ If you or a third-party developer need to build a highly customized Gii template
 public function rules()
 {
     return RuleBuilder::rules([
-        <?php echo PHP_TAB . PHP_TAB . implode(',' . PHP_EOL . PHP_TAB . PHP_TAB, $fluentRules) . PHP_EOL; ?>
+        <?php echo INDENT . INDENT . implode(',' . PHP_EOL . INDENT . INDENT, $fluentRules) . PHP_EOL; ?>
     ]);
 }
 ```
